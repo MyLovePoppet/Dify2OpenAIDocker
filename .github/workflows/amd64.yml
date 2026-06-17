@@ -18,7 +18,7 @@ jobs:
     - name: Pull Docker Images and Package
       run: |
           docker build -t dify2opai:v1 .
-          docker save "dify2opai:v1" -o "dify2opai-v1-amd64.tar
+          docker save "dify2opai:v1" -o "dify2opai-v1-amd64.tar"
           gzip -c "dify2opai-v1-amd64.tar" > "dify2opai-v1-amd64.tar.gz"
 
     - name: Upload artifact
