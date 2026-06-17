@@ -1,11 +1,6 @@
 name: x86-64 Pull and Save Docker Image
 on:
   workflow_dispatch:
-    inputs:
-      docker_images:
-        description: '请填写docker镜像名称 多个用英文逗号分开'
-        required: true
-        default: 'alpine:latest,busybox:stable-glibc'  # 设置默认的 Docker 镜像列表
 
 jobs:
   pull_and_package:
@@ -22,16 +17,9 @@ jobs:
 
     - name: Pull Docker Images and Package
       run: |
-        images="${{ github.event.inputs.docker_images }}"
-          IFS=',' read -r -a image_array <<< "$images"
-          for image in "${image_array[@]}"; do
-            docker pull "${image}" --platform "linux/amd64"
-            image_name="${image//\//_}"
-            image_name="${image_name//:/_}"
-            docker save "${image}" -o "${image_name}-amd64.tar"
-            gzip -c "${image_name}-amd64.tar" > "${image_name}-amd64.tar.gz"
-            rm "${image_name}-amd64.tar"
-          done
+          docker build -t dify2opai:v1 .
+          docker save "dify2opai:v1" -o "dify2opai-v1-amd64.tar
+          gzip -c "dify2opai-v1-amd64.tar" > "dify2opai-v1-amd64.tar.gz"
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
